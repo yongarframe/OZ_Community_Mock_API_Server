@@ -30,7 +30,6 @@ const secretKey = "ozcodingschool";
 
 // 클라이언트에서 post 요청을 받은 경우
 app.post("/", (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   // console.log(userId, userPassword);
   const userInfo = users.find(
@@ -44,9 +43,13 @@ app.post("/", (req, res) => {
     const accessToken = jwt.sign({ email: userInfo.user.id }, secretKey, {
       expiresIn: 1000 * 60 * 5,
     });
-    // console.log(accessToken);
     userInfo.access_token = accessToken;
-    return res.json(userInfo);
+    const { password, ...userWithoutPassword } = userInfo.user;
+    const userInfoWithoutPassword = {
+      ...userInfo,
+      user: userWithoutPassword,
+    };
+    return res.json(userInfoWithoutPassword);
     // 1. 유저정보가 있는 경우 accessToken을 발급하는 로직을 작성하세요.(sign)
     // 이곳에 코드를 작성하세요.
     // 2. 응답으로 accessToken을 클라이언트로 전송하세요. (res.send 사용)

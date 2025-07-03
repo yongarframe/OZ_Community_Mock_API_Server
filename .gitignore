@@ -26,4 +26,3 @@ dist-ssr
 .env
 index.html
 login.js
-users.js
